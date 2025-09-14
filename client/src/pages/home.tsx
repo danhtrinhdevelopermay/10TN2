@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Presentation, Users, UserCog, FileSpreadsheet, RotateCcw } from "lucide-react";
+import { Presentation, Users, UserCog, FileSpreadsheet, RotateCcw, Map } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
@@ -269,6 +270,17 @@ export default function Home() {
               </h1>
             </div>
             <div className="flex items-center space-x-4">
+              <Link href="/map">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-muted-foreground"
+                  data-testid="button-map-view"
+                >
+                  <Map className="mr-2 h-4 w-4" />
+                  Sơ đồ lớp
+                </Button>
+              </Link>
               <div className="flex bg-muted rounded-lg p-1">
                 <Button
                   variant={mode === "student" ? "default" : "ghost"}

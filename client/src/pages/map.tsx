@@ -1,3 +1,7 @@
+import { ArrowLeft } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+
 export default function Map() {
   return (
     <div style={{
@@ -8,6 +12,24 @@ export default function Map() {
       padding: '30px',
       minHeight: '100vh'
     }}>
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'flex-start', 
+        marginBottom: '20px' 
+      }}>
+        <Link href="/">
+          <Button 
+            variant="outline" 
+            size="sm"
+            style={{ backgroundColor: '#fff' }}
+            data-testid="button-back-home"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Quay về
+          </Button>
+        </Link>
+      </div>
+      
       <h1 style={{
         color: '#2c7be5',
         marginBottom: '25px',
