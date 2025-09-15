@@ -281,6 +281,17 @@ export default function Home() {
                   Sơ đồ lớp
                 </Button>
               </Link>
+              <Link href="/results">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-muted-foreground"
+                  data-testid="button-results-view"
+                >
+                  <FileSpreadsheet className="mr-2 h-4 w-4" />
+                  Kết quả
+                </Button>
+              </Link>
               <div className="flex bg-muted rounded-lg p-1">
                 <Button
                   variant={mode === "student" ? "default" : "ghost"}

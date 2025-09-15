@@ -1,4 +1,4 @@
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, FileSpreadsheet } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 
@@ -14,7 +14,8 @@ export default function Map() {
     }}>
       <div style={{ 
         display: 'flex', 
-        justifyContent: 'flex-start', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
         marginBottom: '20px' 
       }}>
         <Link href="/">
@@ -26,6 +27,18 @@ export default function Map() {
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Quay về
+          </Button>
+        </Link>
+        
+        <Link href="/results">
+          <Button 
+            variant="outline" 
+            size="sm"
+            style={{ backgroundColor: '#fff' }}
+            data-testid="button-to-results"
+          >
+            <FileSpreadsheet className="mr-2 h-4 w-4" />
+            Xem kết quả
           </Button>
         </Link>
       </div>
