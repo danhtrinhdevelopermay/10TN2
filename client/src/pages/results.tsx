@@ -206,6 +206,32 @@ export default function Results() {
           maxWidth: '800px',
           marginTop: '20px'
         }}>
+          {/* Teacher's Desk */}
+          <div style={{
+            background: '#28a745',
+            color: 'white',
+            borderRadius: '8px',
+            padding: '8px 15px',
+            fontSize: '14px',
+            fontWeight: '600',
+            boxShadow: '0 4px 8px rgba(40, 167, 69, 0.3)'
+          }}>
+            BÀN GIÁO VIÊN
+          </div>
+
+          {/* Teacher's Board */}
+          <div style={{
+            background: '#2c7be5',
+            color: 'white',
+            borderRadius: '8px',
+            padding: '12px 20px',
+            fontSize: '16px',
+            fontWeight: '600',
+            boxShadow: '0 4px 8px rgba(44, 123, 229, 0.3)'
+          }}>
+            BẢNG
+          </div>
+
           {/* Entrance */}
           <div style={{
             display: 'flex',
@@ -224,32 +250,6 @@ export default function Results() {
               CỬA VÀO
             </div>
             <ArrowRight style={{ color: '#2c7be5' }} size={20} />
-          </div>
-
-          {/* Teacher's Board */}
-          <div style={{
-            background: '#2c7be5',
-            color: 'white',
-            borderRadius: '8px',
-            padding: '12px 20px',
-            fontSize: '16px',
-            fontWeight: '600',
-            boxShadow: '0 4px 8px rgba(44, 123, 229, 0.3)'
-          }}>
-            BẢNG
-          </div>
-
-          {/* Teacher's Desk */}
-          <div style={{
-            background: '#28a745',
-            color: 'white',
-            borderRadius: '8px',
-            padding: '8px 15px',
-            fontSize: '14px',
-            fontWeight: '600',
-            boxShadow: '0 4px 8px rgba(40, 167, 69, 0.3)'
-          }}>
-            BÀN GIÁO VIÊN
           </div>
         </div>
 
