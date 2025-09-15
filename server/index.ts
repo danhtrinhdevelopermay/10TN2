@@ -6,7 +6,7 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
 // Extend Express session interface
-declare module 'express-session' {
+declare module "express-session" {
   interface SessionData {
     isAdmin?: boolean;
   }
@@ -21,24 +21,28 @@ const PgSession = connectPgSimple(session);
 
 // Require session secret from environment
 if (!process.env.SESSION_SECRET) {
-  throw new Error("SESSION_SECRET environment variable must be set for secure sessions");
+  throw new Error(
+    "SESSION_SECRET environment variable must be set for secure sessions"
+  );
 }
 
-app.use(session({
-  store: new PgSession({
-    pool: pool,
-    tableName: 'session',
-    createTableIfMissing: true
-  }),
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    secure: process.env.NODE_ENV === 'production',
-    httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
-  }
-}));
+app.use(
+  session({
+    store: new PgSession({
+      pool: pool,
+      tableName: "session",
+      createTableIfMissing: true,
+    }),
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
+  })
+);
 
 app.use((req, res, next) => {
   const start = Date.now();
@@ -73,49 +77,54 @@ app.use((req, res, next) => {
 (async () => {
   const server = await registerRoutes(app);
 
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
+  app.use(
+    (err: any, _req: Request, res: Response, _next: NextFunction) => {
+      const status = err.status || err.statusCode || 500;
+      const message = err.message || "Internal Server Error";
 
-    res.status(status).json({ message });
-    throw err;
-  });
+      res.status(status).json({ message });
+      throw err;
+    }
+  );
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
+  // only setup vite in development
   if (app.get("env") === "development") {
     await setupVite(app, server);
   } else {
     serveStatic(app);
   }
 
-  // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 5000 if not specified.
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = parseInt(process.env.PORT || '5000', 10);
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
-    log(`serving on port ${port}`);
-  });
+  const port = parseInt(process.env.PORT || "5000", 10);
+  server.listen(
+    {
+      port,
+      host: "0.0.0.0",
+      reusePort: true,
+    },
+    () => {
+      log(`serving on port ${port}`);
+    }
+  );
 })();
-const url = `https://one0tn2.onrender.com/`; // Replace with your Render URL
-const interval = 30000; // Interval in milliseconds (30 seconds)
 
-//Reloader Function
-function reloadWebsite() {
-  axios.get(url)
-    .then(response => {
-      console.log(`Reloaded at ${new Date().toISOString()}: Status Code ${response.status}`);
-    })
-    .catch(error => {
-      console.error(`Error reloading at ${new Date().toISOString()}:`, error.message);
-    });
+// ==========================
+// Reload website function
+// ==========================
+const url = `https://one0tn2.onrender.com/`; // Replace with your Render URL
+const interval = 30000; // 30 seconds
+
+async function reloadWebsite() {
+  try {
+    const response = await fetch(url);
+    console.log(
+      `Reloaded at ${new Date().toISOString()}: Status Code ${response.status}`
+    );
+  } catch (error: any) {
+    console.error(
+      `Error reloading at ${new Date().toISOString()}:`,
+      error.message
+    );
+  }
 }
 
 setInterval(reloadWebsite, interval);
-
