@@ -536,13 +536,24 @@ export default function Home() {
       .seat.occupied {
         background: repeating-linear-gradient(
           45deg,
-          rgba(0,0,0,0.12) 0px 2px,
+          rgba(0,0,0,0.2) 0px 2px,
           transparent 2px 4px
         );
         color: #000;
         border: 1.5px solid #000;
         border-style: solid;
         font-weight: 700;
+        position: relative;
+      }
+      
+      .seat.occupied::after {
+        content: "✓";
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        font-size: 8px;
+        font-weight: bold;
+        color: #000;
       }
       
       .footer {
@@ -608,11 +619,22 @@ export default function Home() {
       .legend-box.occupied {
         background: repeating-linear-gradient(
           45deg,
-          rgba(0,0,0,0.12) 0px 2px,
+          rgba(0,0,0,0.2) 0px 2px,
           transparent 2px 4px
         );
         color: #000;
         border: 2px solid #000;
+        position: relative;
+      }
+      
+      .legend-box.occupied::after {
+        content: "✓";
+        position: absolute;
+        top: 1px;
+        right: 1px;
+        font-size: 6px;
+        font-weight: bold;
+        color: #000;
       }
       
       .legend-box.empty {
@@ -645,7 +667,7 @@ export default function Home() {
         <div class="legend">
           <div class="legend-items">
             <div class="legend-item">
-              <div class="legend-box occupied">✓</div>
+              <div class="legend-box occupied"></div>
               <span>ĐÃ CHỌN CHỖ NGỒI</span>
             </div>
             <div class="legend-item">
