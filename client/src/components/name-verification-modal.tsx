@@ -86,7 +86,7 @@ export default function NameVerificationModal({
         <DialogHeader className="pb-4">
           <DialogTitle className="text-2xl font-bold text-center text-pink-600 dark:text-pink-400 flex items-center justify-center gap-2" data-testid="modal-title">
             <Heart className="h-7 w-7 text-pink-500 animate-pulse" />
-            🌸 Xác nhận thông tin cá nhân 🌸
+Đọc kỹ dùm mk nka
             <Heart className="h-7 w-7 text-pink-500 animate-pulse" />
           </DialogTitle>
         </DialogHeader>
@@ -110,8 +110,8 @@ export default function NameVerificationModal({
                 🚨 Thông báo quan trọng
               </h3>
               <p className="text-sm text-orange-600 dark:text-orange-400 leading-relaxed">
-                Do hệ thống lưu trữ của chúng tôi gặp sự cố kỹ thuật, 
-                một số tên học sinh có thể bị sai chính tả hoặc thiếu thông tin. 
+                Do hệ thống lưu trữ của mk gặp sự cố kỹ thuật, 
+                một số tên của các bn có thể bị sai chính tả hoặc thiếu thông tin. 
                 Vì vậy, chúng tôi cần bạn kiểm tra lại và nhập đầy đủ họ và tên 
                 chính xác của mình để đảm bảo dữ liệu được cập nhật đúng. 
                 <br />
