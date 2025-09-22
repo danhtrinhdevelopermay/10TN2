@@ -12,17 +12,12 @@ export default function Map() {
       padding: '30px',
       minHeight: '100vh'
     }}>
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        marginBottom: '20px' 
-      }}>
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-5 px-4">
         <Link href="/">
           <Button 
             variant="outline" 
             size="sm"
-            style={{ backgroundColor: '#fff' }}
+            className="bg-white hover:bg-gray-50 min-w-[120px]"
             data-testid="button-back-home"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -34,7 +29,7 @@ export default function Map() {
           <Button 
             variant="outline" 
             size="sm"
-            style={{ backgroundColor: '#fff' }}
+            className="bg-white hover:bg-gray-50 min-w-[120px]"
             data-testid="button-to-results"
           >
             <FileSpreadsheet className="mr-2 h-4 w-4" />
