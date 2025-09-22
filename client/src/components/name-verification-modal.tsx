@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { User, CheckCircle, AlertCircle, Clock, Heart, Database } from "lucide-react";
+import { Clock, Heart, Database } from "lucide-react";
 
 interface NameVerificationModalProps {
   isOpen: boolean;
@@ -16,18 +14,11 @@ export default function NameVerificationModal({
   onClose, 
   onVerify 
 }: NameVerificationModalProps) {
-  const [studentName, setStudentName] = useState("");
-  const [nameError, setNameError] = useState("");
   const [timeLeft, setTimeLeft] = useState(10);
   const [canClose, setCanClose] = useState(false);
-  
-  const isValidName = studentName.trim().length >= 2;
-  const hasInput = studentName.trim().length > 0;
 
   useEffect(() => {
     if (isOpen) {
-      setStudentName("");
-      setNameError("");
       setTimeLeft(10);
       setCanClose(false);
       
@@ -45,31 +36,6 @@ export default function NameVerificationModal({
       return () => clearInterval(timer);
     }
   }, [isOpen]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (studentName.trim().length < 2) {
-      setNameError("Tên phải có ít nhất 2 ký tự");
-      return;
-    }
-    if (studentName.trim()) {
-      onVerify(studentName.trim());
-    }
-  };
-  
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setStudentName(value);
-    if (nameError && value.trim().length >= 2) {
-      setNameError("");
-    }
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && isValidName) {
-      handleSubmit(e);
-    }
-  };
 
   const handleClose = () => {
     if (canClose) {
@@ -121,84 +87,19 @@ export default function NameVerificationModal({
           </div>
         </div>
         
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-3">
-            <Label htmlFor="studentName" className="block text-sm font-semibold text-foreground mb-2">
-              🌟 Họ và tên đầy đủ của bạn
-            </Label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <User className={`h-5 w-5 ${
-                  hasInput 
-                    ? isValidName 
-                      ? 'text-green-500' 
-                      : 'text-red-500'
-                    : 'text-pink-400'
-                }`} />
-              </div>
-              <Input
-                id="studentName"
-                type="text"
-                placeholder="Ví dụ: Nguyễn Thị Hoa"
-                value={studentName}
-                onChange={handleInputChange}
-                onKeyDown={handleKeyPress}
-                aria-invalid={!!nameError}
-                aria-describedby={nameError ? "name-error" : undefined}
-                className={`pl-10 pr-10 h-12 text-base border-pink-200 focus:border-pink-400 focus:ring-pink-400 ${
-                  nameError ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
-                } ${
-                  hasInput && isValidName ? 'border-green-500 focus:border-green-500 focus:ring-green-500' : ''
-                }`}
-                autoFocus
-                autoCapitalize="words"
-                autoComplete="name"
-                data-testid="input-student-name"
-              />
-              {hasInput && (
-                <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                  {isValidName ? (
-                    <CheckCircle className="h-5 w-5 text-green-500" />
-                  ) : (
-                    <AlertCircle className="h-5 w-5 text-red-500" />
-                  )}
-                </div>
-              )}
-            </div>
-            {nameError && (
-              <p id="name-error" className="text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
-                <AlertCircle className="h-4 w-4" />
-                {nameError}
-              </p>
-            )}
-            <p className="text-xs text-muted-foreground">
-              💡 Hãy nhập họ và tên đầy đủ như trong giấy tờ tùy thân
-            </p>
-          </div>
-          
-          <div className="flex flex-col gap-3 pt-6">
+        <div className="flex flex-col gap-3 pt-6">
+          {canClose && (
             <Button
-              type="submit"
-              className="w-full h-12 text-base font-semibold bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white shadow-lg hover:shadow-xl transition-all duration-200"
-              disabled={!isValidName}
-              data-testid="button-confirm-name"
+              type="button"
+              variant="outline"
+              onClick={handleClose}
+              className="w-full h-12 text-base font-semibold border-2 border-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400"
+              data-testid="button-skip"
             >
-              🌸 Xác nhận thông tin 🌸
+              ⏭️ Bỏ qua (không khuyến khích)
             </Button>
-            
-            {canClose && (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleClose}
-                className="w-full h-12 text-base font-semibold border-2 border-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400"
-                data-testid="button-skip"
-              >
-                ⏭️ Bỏ qua (không khuyến khích)
-              </Button>
-            )}
-          </div>
-        </form>
+          )}
+        </div>
 
         <div className="text-center mt-4 text-xs text-muted-foreground">
           <p>🔒 Thông tin của bạn được bảo mật và chỉ dùng cho mục đích học tập</p>
