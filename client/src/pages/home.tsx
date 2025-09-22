@@ -153,6 +153,289 @@ export default function Home() {
     clearSeatMutation.mutate(seatId);
   };
 
+  const handleDownloadDiagram = () => {
+    const printContent = generatePrintableClassroomHTML(seats);
+    const printWindow = window.open('', '_blank');
+    
+    if (printWindow) {
+      printWindow.document.write(printContent);
+      printWindow.document.close();
+      
+      // Wait for content to load, then print
+      printWindow.onload = () => {
+        printWindow.focus();
+        setTimeout(() => {
+          printWindow.print();
+          
+          // Close after printing (optional)
+          printWindow.onafterprint = () => {
+            printWindow.close();
+          };
+        }, 100);
+      };
+
+      toast({
+        title: "Thành công",
+        description: "Đã mở sơ đồ để in!",
+      });
+    } else {
+      toast({
+        title: "Lỗi",
+        description: "Không thể mở cửa sổ in. Vui lòng kiểm tra cài đặt popup của trình duyệt.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const escapeHtml = (text: string): string => {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  };
+
+  const generatePrintableClassroomHTML = (seats: Seat[]) => {
+    const getSeatData = (groupNumber: number, tableNumber: number, seatNumber: number) => {
+      return seats.find(seat => 
+        seat.groupNumber === groupNumber && 
+        seat.tableNumber === tableNumber && 
+        seat.seatNumber === seatNumber
+      );
+    };
+
+    const generateGroupHTML = (groupNumber: number) => {
+      let groupHTML = `
+        <div class="group">
+          <h3>Tổ ${groupNumber}</h3>
+          <div class="tables">
+      `;
+
+      for (let tableNumber = 1; tableNumber <= 6; tableNumber++) {
+        const seat1 = getSeatData(groupNumber, tableNumber, 1);
+        const seat2 = getSeatData(groupNumber, tableNumber, 2);
+        
+        groupHTML += `
+          <div class="table">
+            <div class="table-label">Bàn ${tableNumber}</div>
+            <div class="seats">
+              <div class="seat ${seat1?.studentName ? 'occupied' : 'empty'}">
+                ${seat1?.studentName ? escapeHtml(seat1.studentName) : ''}
+              </div>
+              <div class="seat ${seat2?.studentName ? 'occupied' : 'empty'}">
+                ${seat2?.studentName ? escapeHtml(seat2.studentName) : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      groupHTML += `
+          </div>
+        </div>
+      `;
+      
+      return groupHTML;
+    };
+
+    return `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Sơ đồ Chỗ ngồi Lớp học</title>
+        <style>
+          @page {
+            size: A4;
+            margin: 1cm;
+          }
+          
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+          
+          body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            line-height: 1.4;
+            color: #000;
+            background: white;
+          }
+          
+          .header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+          }
+          
+          .title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+          }
+          
+          .board {
+            text-align: center;
+            margin: 15px 0;
+            padding: 8px;
+            border: 2px solid #000;
+            font-weight: bold;
+          }
+          
+          .teacher-desk {
+            text-align: center;
+            margin: 10px 0;
+            padding: 5px;
+            border: 1px solid #666;
+          }
+          
+          .classroom {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+          }
+          
+          .group {
+            border: 1px solid #000;
+            padding: 15px;
+          }
+          
+          .group h3 {
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #666;
+            padding-bottom: 5px;
+          }
+          
+          .tables {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+          }
+          
+          .table {
+            text-align: center;
+          }
+          
+          .table-label {
+            font-size: 10px;
+            margin-bottom: 5px;
+            font-weight: bold;
+          }
+          
+          .seats {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+          }
+          
+          .seat {
+            border: 1px solid #000;
+            padding: 8px 4px;
+            min-height: 30px;
+            font-size: 10px;
+            font-weight: bold;
+            text-align: center;
+            word-break: break-word;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          
+          .seat.occupied {
+            background-color: #f0f0f0;
+          }
+          
+          .seat.empty {
+            background-color: white;
+            border-style: dashed;
+          }
+          
+          .door {
+            text-align: center;
+            margin-top: 20px;
+            padding: 5px;
+            border: 1px solid #666;
+            font-weight: bold;
+          }
+          
+          .legend {
+            margin-top: 20px;
+            border: 1px solid #000;
+            padding: 10px;
+          }
+          
+          .legend h4 {
+            font-size: 12px;
+            margin-bottom: 8px;
+            font-weight: bold;
+          }
+          
+          .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+            font-size: 10px;
+          }
+          
+          .legend-box {
+            width: 15px;
+            height: 15px;
+            border: 1px solid #000;
+            margin-right: 8px;
+          }
+          
+          .legend-box.occupied {
+            background-color: #f0f0f0;
+          }
+          
+          .legend-box.empty {
+            background-color: white;
+            border-style: dashed;
+          }
+          
+          @media print {
+            body { margin: 0; }
+            .no-print { display: none; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <div class="title">SƠ ĐỒ CHỖ NGỒI LỚP HỌC</div>
+          <div class="board">BẢNG VIẾT</div>
+          <div class="teacher-desk">🏫 Bàn giáo viên</div>
+        </div>
+        
+        <div class="classroom">
+          ${generateGroupHTML(1)}
+          ${generateGroupHTML(2)}
+          ${generateGroupHTML(3)}
+          ${generateGroupHTML(4)}
+        </div>
+        
+        <div class="door">🚪 Cửa ra vào</div>
+        
+        <div class="legend">
+          <h4>Chú thích:</h4>
+          <div class="legend-item">
+            <div class="legend-box occupied"></div>
+            <span>Đã có học sinh</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-box empty"></div>
+            <span>Chỗ trống</span>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+  };
+
   const handleExportExcel = async () => {
     if (!seats.length) return;
 
@@ -387,6 +670,14 @@ export default function Home() {
                   Bảng điều khiển Lớp trưởng
                 </h2>
                 <div className="flex space-x-3">
+                  <Button
+                    onClick={handleDownloadDiagram}
+                    className="bg-accent hover:bg-accent/90 text-accent-foreground"
+                    data-testid="button-download-diagram"
+                  >
+                    <FileSpreadsheet className="mr-2 h-4 w-4" />
+                    Tải sơ đồ in
+                  </Button>
                   <Button
                     onClick={handleExportExcel}
                     className="bg-secondary hover:bg-secondary/90 text-secondary-foreground"
