@@ -420,6 +420,11 @@ export default function Home() {
     };
 
     const cssContent = `
+      @media print {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      
       * {
         margin: 0;
         padding: 0;
@@ -430,25 +435,28 @@ export default function Home() {
         font-family: Arial, sans-serif;
         background: white;
         padding: 20px;
+        color: #000;
       }
       
       .header {
         text-align: center;
         margin-bottom: 30px;
         padding: 20px 0;
+        border-bottom: 2px solid #000;
       }
       
       .title {
         font-size: 24px;
         font-weight: bold;
-        color: #2563eb;
+        color: #000;
         margin-bottom: 8px;
         letter-spacing: 2px;
+        text-transform: uppercase;
       }
       
       .academic-year {
         font-size: 14px;
-        color: #666;
+        color: #000;
         font-weight: normal;
       }
       
@@ -463,22 +471,22 @@ export default function Home() {
       }
       
       .group {
-        border: 2px solid #3b82f6;
-        border-radius: 12px;
+        border: 2px solid #000;
+        border-radius: 8px;
         padding: 20px;
-        background: #f8fafc;
+        background: #fff;
       }
       
       .group-title {
         text-align: center;
         font-size: 16px;
         font-weight: bold;
-        color: #2563eb;
+        color: #000;
         margin-bottom: 20px;
         padding: 8px;
         background: white;
-        border: 1px solid #3b82f6;
-        border-radius: 6px;
+        border-bottom: 1px solid #000;
+        text-transform: uppercase;
       }
       
       .tables {
@@ -494,9 +502,11 @@ export default function Home() {
       .table-label {
         font-size: 12px;
         font-weight: bold;
-        color: #374151;
+        color: #000;
         margin-bottom: 8px;
         text-align: center;
+        border-bottom: 1px solid #000;
+        padding-bottom: 2px;
       }
       
       .seats {
@@ -506,17 +516,16 @@ export default function Home() {
       }
       
       .seat {
-        border: 2px solid #d1d5db;
-        border-style: dashed;
+        border: 1.5px dashed #000;
         padding: 12px 8px;
         min-width: 80px;
         min-height: 35px;
         font-size: 11px;
-        font-weight: 500;
+        font-weight: 600;
         text-align: center;
-        border-radius: 6px;
+        border-radius: 4px;
         background: white;
-        color: #6b7280;
+        color: #000;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -525,16 +534,22 @@ export default function Home() {
       }
       
       .seat.occupied {
-        background: #10b981;
-        color: white;
-        border: 2px solid #059669;
+        background: repeating-linear-gradient(
+          45deg,
+          rgba(0,0,0,0.12) 0px 2px,
+          transparent 2px 4px
+        );
+        color: #000;
+        border: 1.5px solid #000;
         border-style: solid;
-        font-weight: 600;
+        font-weight: 700;
       }
       
       .footer {
         margin-top: 40px;
         text-align: center;
+        border-top: 2px solid #000;
+        padding-top: 20px;
       }
       
       .footer-items {
@@ -546,20 +561,21 @@ export default function Home() {
       
       .footer-item {
         padding: 10px 20px;
-        border: 2px solid #3b82f6;
-        border-radius: 8px;
-        background: #eff6ff;
+        border: 2px solid #000;
+        border-radius: 4px;
+        background: white;
         font-weight: bold;
-        color: #1d4ed8;
+        color: #000;
         font-size: 14px;
+        text-transform: uppercase;
       }
       
       .legend {
         margin-top: 30px;
         padding: 15px;
-        border: 1px solid #d1d5db;
-        border-radius: 8px;
-        background: #f9fafb;
+        border: 2px solid #000;
+        border-radius: 4px;
+        background: white;
         display: inline-block;
       }
       
@@ -573,14 +589,15 @@ export default function Home() {
         display: flex;
         align-items: center;
         font-size: 12px;
-        color: #374151;
+        color: #000;
+        font-weight: 600;
       }
       
       .legend-box {
         width: 20px;
         height: 20px;
         margin-right: 8px;
-        border-radius: 4px;
+        border-radius: 2px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -589,15 +606,19 @@ export default function Home() {
       }
       
       .legend-box.occupied {
-        background: #10b981;
-        color: white;
-        border: 2px solid #059669;
+        background: repeating-linear-gradient(
+          45deg,
+          rgba(0,0,0,0.12) 0px 2px,
+          transparent 2px 4px
+        );
+        color: #000;
+        border: 2px solid #000;
       }
       
       .legend-box.empty {
         background: white;
-        border: 2px dashed #d1d5db;
-        color: #6b7280;
+        border: 2px dashed #000;
+        color: #000;
       }
     `;
 
