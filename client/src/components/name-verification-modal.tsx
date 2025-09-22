@@ -171,12 +171,6 @@ export default function NameVerificationModal({
                 {nameError}
               </p>
             )}
-            {hasInput && isValidName && (
-              <p className="text-sm text-green-600 dark:text-green-400 flex items-center gap-1">
-                <CheckCircle className="h-4 w-4" />
-                Tên rất đẹp! 🥰
-              </p>
-            )}
             <p className="text-xs text-muted-foreground">
               💡 Hãy nhập họ và tên đầy đủ như trong giấy tờ tùy thân
             </p>
