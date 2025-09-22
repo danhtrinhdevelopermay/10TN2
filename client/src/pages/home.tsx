@@ -491,7 +491,7 @@ export default function Home() {
       
       .tables {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
         gap: 15px;
       }
       
