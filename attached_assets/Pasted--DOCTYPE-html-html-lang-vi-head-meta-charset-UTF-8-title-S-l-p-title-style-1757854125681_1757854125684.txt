@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Sơ đồ lớp</title>
+  <style>
+    body {
+      font-family: "Poppins", Arial, sans-serif;
+      background: linear-gradient(135deg, #f0f4ff, #f7fff0);
+      color: #2c3e50;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #2c7be5;
+      margin-bottom: 25px;
+      font-size: 32px;
+      font-weight: 700;
+    }
+
+    .lop {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+    }
+
+    .to {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      width: 320px;
+      padding: 20px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border-top: 5px solid #2c7be5;
+    }
+
+    .to:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+    }
+
+    .to h2 {
+      color: #2c7be5;
+      margin-bottom: 15px;
+      font-size: 20px;
+    }
+
+    .ban {
+      margin: 15px 0;
+      padding: 10px;
+      border-radius: 12px;
+      background: #f9fbfd;
+      border: 1px solid #e5ecf3;
+    }
+
+    .ban h3 {
+      font-size: 15px;
+      margin-bottom: 6px;
+      color: #555;
+    }
+
+    .ghe {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .ghe div {
+      width: 120px;
+      min-height: 50px;
+      background: #e9f5ff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      box-shadow: inset 0 -3px 6px rgba(0,0,0,0.05);
+      transition: all 0.2s ease;
+    }
+
+    .ghe div:hover {
+      background: #d4ecff;
+      transform: scale(1.03);
+    }
+
+    .empty {
+      border: 2px dashed #bbb;
+      background: #fafafa;
+      color: #888;
+      font-weight: normal;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sơ đồ lớp</h1>
+
+  <div class="lop">
+    <!-- Tổ 1 -->
+    <div class="to">
+      <h2>Tổ 1</h2>
+      <div class="ban">
+        <h3>Bàn 1</h3>
+        <div class="ghe">
+          <div class="empty"></div>
+          <div class="empty"></div>
+        </div>
+      </div>
+      <div class="ban">
+        <h3>Bàn 2</h3>
+        <div class="ghe">
+          <div class="empty"></div>
+          <div>Duyên Anh</div>
+        </div>
+      </div>
+      <div class="ban">
+        <h3>Bàn 3</h3>
+        <div class="ghe">
+          <div>Nhựt Trang</div>
+          <div>Thủy Tiên</div>
+        </div>
+      </div>
+      <div class="ban">
+        <h3>Bàn 4</h3>
+        <div class="ghe">
+          <div>Phan Thị Khánh Băng</div>
+          <div>Phan Thị Nhã Đan</div>
+        </div>
+      </div>
+      <div class="ban">
+        <h3>Bàn 5</h3>
+        <div class="ghe">
+          <div>Huỳnh Giao</div>
+          <div>Ngọc Thắm</div>
+        </div>
+      </div>
+      <div class="ban">
+        <h3>Bàn 6</h3>
+        <div class="ghe">
+          <div>Phan Vũ Huy</div>
+          <div class="empty"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tổ 2 -->
+    <div class="to">
+      <h2>Tổ 2</h2>
+      <div class="ban">
+        <h3>Bàn 1</h3>
+        <div class="ghe">
+          <div>Phạm Văn Hiếu</div>
+          <div class="empty"></div>
+        </div>
+      </div>
+      <div class="ban">
+        <h3>Bàn 2</h3>
+        <div class="ghe">
+          <div>Trần Thị Cẩm Như</div>
+          <div>Tiết Thị Cẩm Ly</div>
+        </div>
+      </div>
+      <div class="ban">
+        <h3>Bàn 3</h3>
+        <div class="ghe">
+          <div>Đỗ Tấn Lộc</div>
+          <div>Danh Trình</div>
+        </div>
+      </div>
+      <div class="ban">
+        <h3>Bàn 4</h3>
+        <div class="ghe">
+          <div>Ngọc Tuyền</div>
+          <div>Nguyễn Khánh Duy</div>
+        </div>
+      </div>
+      <div class="ban">
+        <h3>Bàn 5</h3>
+        <div class="ghe">
+          <div>Phạm Thế Anh</div>
+          <div>Trần Ngọc Diệu</div>
+        </div>
+      </div>
+      <div class="ban">
+        <h3>Bàn 6</h3>
+        <div class="ghe">
+          <div>Ngọc Ngân</div>
+          <div>Huỳnh Anh</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tổ 3 -->
+    <div class="to">
+      <h2>Tổ 3</h2>
+      <div class="ban">
+        <h3>Bàn 1</h3>
+        <div class="ghe">
+          <div>Hồ Ngọc Trâm</div>
+          <div>Trần Nguyên Phú</div>
+        </div>
+      </div>
+      <div class="ban">
+        <h3>Bàn 2</h3>
+        <div class="ghe">
+          <div class="empty"></div>
+          <div>Trúc Vy</div>
+        </div>
+      </div>
+      <div class="ban">
+        <h3>Bàn 3</h3>
+        <div class="ghe">
+          <div>Trường Vi</div>
+          <div class="empty"></div>
+        </div>
+      </div>
+      <div class="ban">
+        <h3>Bàn 4</h3>
+        <div class="ghe">
+          <div>Trường Vi</div>
+          <div class="empty"></div>
+        </div>
+      </div>
+      <div class="ban">
+        <h3>Bàn 5</h3>
+        <div class="ghe">
+          <div>Võ Đặng Gia Hân</div>
+          <div class="empty"></div>
+        </div>
+      </div>
+      <div class="ban">
+        <h3>Bàn 6</h3>
+        <div class="ghe">
+          <div class="empty"></div>
+          <div>Bùi Minh Thuận</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tổ 4 -->
+    <div class="to">
+      <h2>Tổ 4</h2>
+      <div class="ban">
+        <h3>Bàn 1</h3>
+        <div class="ghe">
+          <div>Mỹ Kim</div>
+          <div>Nguyễn Tịnh Ngọc</div>
+        </div>
+      </div>
+      <div class="ban">
+        <h3>Bàn 2</h3>
+        <div class="ghe">
+          <div class="empty"></div>
+          <div class="empty"></div>
+        </div>
+      </div>
+      <div class="ban">
+        <h3>Bàn 3</h3>
+        <div class="ghe">
+          <div class="empty"></div>
+          <div class="empty"></div>
+        </div>
+      </div>
+      <div class="ban">
+        <h3>Bàn 4</h3>
+        <div class="ghe">
+          <div class="empty"></div>
+          <div>Danh Thị Hồng Vinh</div>
+        </div>
+      </div>
+      <div class="ban">
+        <h3>Bàn 5</h3>
+        <div class="ghe">
+          <div>Bùi Minh Hiếu</div>
+          <div class="empty"></div>
+        </div>
+      </div>
+      <div class="ban">
+        <h3>Bàn 6</h3>
+        <div class="ghe">
+          <div class="empty"></div>
+          <div class="empty"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

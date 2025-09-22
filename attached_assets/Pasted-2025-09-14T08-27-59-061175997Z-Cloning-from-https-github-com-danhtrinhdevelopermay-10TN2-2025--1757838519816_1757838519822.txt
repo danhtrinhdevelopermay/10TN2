@@ -1,0 +1,48 @@
+2025-09-14T08:27:59.061175997Z ==> Cloning from https://github.com/danhtrinhdevelopermay/10TN2
+2025-09-14T08:28:00.085134577Z ==> Checking out commit 5c46eaede3b6a92d59528a047ed2fefa6986ac2f in branch main
+2025-09-14T08:28:01.116850068Z ==> Using Node.js version 22.16.0 (default)
+2025-09-14T08:28:01.145349996Z ==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+2025-09-14T08:28:03.142757903Z ==> Running build command 'npm install; npm run build'...
+2025-09-14T08:28:14.932326605Z 
+2025-09-14T08:28:14.932374646Z added 481 packages, and audited 482 packages in 12s
+2025-09-14T08:28:14.932427928Z 
+2025-09-14T08:28:14.932442788Z 64 packages are looking for funding
+2025-09-14T08:28:14.932448688Z   run `npm fund` for details
+2025-09-14T08:28:14.974291388Z 
+2025-09-14T08:28:14.974321008Z 10 vulnerabilities (3 low, 7 moderate)
+2025-09-14T08:28:14.974326159Z 
+2025-09-14T08:28:14.974357369Z To address issues that do not require attention, run:
+2025-09-14T08:28:14.97436486Z   npm audit fix
+2025-09-14T08:28:14.97436872Z 
+2025-09-14T08:28:14.97437292Z To address all issues (including breaking changes), run:
+2025-09-14T08:28:14.97437823Z   npm audit fix --force
+2025-09-14T08:28:14.9743829Z 
+2025-09-14T08:28:14.9743883Z Run `npm audit` for details.
+2025-09-14T08:28:15.221016523Z 
+2025-09-14T08:28:15.221038423Z > rest-express@1.0.0 build
+2025-09-14T08:28:15.221043384Z > vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+2025-09-14T08:28:15.221048184Z 
+2025-09-14T08:28:15.575401988Z vite v5.4.19 building for production...
+2025-09-14T08:28:15.628017289Z transforming...
+2025-09-14T08:28:16.243012545Z Browserslist: browsers data (caniuse-lite) is 11 months old. Please run:
+2025-09-14T08:28:16.338261935Z   npx update-browserslist-db@latest
+2025-09-14T08:28:16.338275465Z   Why you should do it regularly: https://github.com/browserslist/update-db#readme
+2025-09-14T08:28:17.12112402Z 
+2025-09-14T08:28:17.12115443Z A PostCSS plugin did not pass the `from` option to `postcss.parse`. This may cause imported assets to be incorrectly transformed. If you've recently added a PostCSS plugin that raised this warning, please contact the package author to fix the issue.
+2025-09-14T08:28:17.231504943Z ✓ 15 modules transformed.
+2025-09-14T08:28:17.23647045Z x Build failed in 1.64s
+2025-09-14T08:28:17.236572292Z error during build:
+2025-09-14T08:28:17.236587432Z [vite]: Rollup failed to resolve import "xlsx" from "/opt/render/project/src/client/src/pages/home.tsx".
+2025-09-14T08:28:17.236592342Z This is most likely unintended because it can break your application at runtime.
+2025-09-14T08:28:17.236596473Z If you do want to externalize this module explicitly add it to
+2025-09-14T08:28:17.236600553Z `build.rollupOptions.external`
+2025-09-14T08:28:17.236604083Z     at viteWarn (file:///opt/render/project/src/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:65839:17)
+2025-09-14T08:28:17.236607513Z     at onwarn (file:///opt/render/project/src/node_modules/@vitejs/plugin-react/dist/index.mjs:280:9)
+2025-09-14T08:28:17.236611473Z     at onRollupWarning (file:///opt/render/project/src/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:65869:5)
+2025-09-14T08:28:17.236629283Z     at onwarn (file:///opt/render/project/src/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:65534:7)
+2025-09-14T08:28:17.236633074Z     at file:///opt/render/project/src/node_modules/rollup/dist/es/shared/node-entry.js:19452:13
+2025-09-14T08:28:17.236635314Z     at Object.logger [as onLog] (file:///opt/render/project/src/node_modules/rollup/dist/es/shared/node-entry.js:21178:9)
+2025-09-14T08:28:17.236640663Z     at ModuleLoader.handleInvalidResolvedId (file:///opt/render/project/src/node_modules/rollup/dist/es/shared/node-entry.js:20067:26)
+2025-09-14T08:28:17.236642954Z     at file:///opt/render/project/src/node_modules/rollup/dist/es/shared/node-entry.js:20025:26
+2025-09-14T08:28:17.319931003Z ==> Build failed 😞
+2025-09-14T08:28:17.319947124Z ==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
