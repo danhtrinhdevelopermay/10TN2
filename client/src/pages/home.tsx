@@ -233,12 +233,7 @@ export default function Home() {
       const tempContainer = document.createElement('div');
       tempContainer.style.position = 'absolute';
       tempContainer.style.left = '-9999px';
-      tempContainer.style.width = '794px'; // A4 width in pixels
       tempContainer.style.background = 'white';
-      tempContainer.style.fontFamily = 'Arial, sans-serif';
-      tempContainer.style.fontSize = '12px';
-      tempContainer.style.lineHeight = '1.4';
-      tempContainer.style.color = '#000';
       
       // Add the body content first
       tempContainer.innerHTML = bodyHtml;
@@ -297,12 +292,7 @@ export default function Home() {
       const tempContainer = document.createElement('div');
       tempContainer.style.position = 'absolute';
       tempContainer.style.left = '-9999px';
-      tempContainer.style.width = '794px'; // A4 width in pixels
       tempContainer.style.background = 'white';
-      tempContainer.style.fontFamily = 'Arial, sans-serif';
-      tempContainer.style.fontSize = '12px';
-      tempContainer.style.lineHeight = '1.4';
-      tempContainer.style.color = '#000';
       
       // Add the body content first
       tempContainer.innerHTML = bodyHtml;
@@ -423,6 +413,8 @@ export default function Home() {
       @media print {
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
+        body { margin: 0; }
+        .page-break { page-break-before: always; }
       }
       
       * {
@@ -431,122 +423,372 @@ export default function Home() {
         box-sizing: border-box;
       }
       
-      body {
-        font-family: Arial, sans-serif;
+      .print-root {
+        font-family: 'Times New Roman', serif;
         background: white;
-        padding: 20px;
+        padding: 25px;
         color: #000;
+        line-height: 1.4;
+        width: 794px;
+        min-height: 100vh;
+      }
+      
+      body {
+        font-family: 'Times New Roman', serif;
+        background: white;
+        padding: 25px;
+        color: #000;
+        line-height: 1.4;
       }
       
       .header {
         text-align: center;
-        margin-bottom: 30px;
-        padding: 20px 0;
-        border-bottom: 2px solid #000;
+        margin-bottom: 40px;
+        padding: 30px 0;
+        border: 3px double #000;
+        border-radius: 0;
+        position: relative;
+        background: white;
+      }
+      
+      .header::before {
+        content: "";
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+        border: 1px solid #000;
+        border-radius: 0;
       }
       
       .title {
-        font-size: 24px;
+        font-size: 28px;
         font-weight: bold;
         color: #000;
-        margin-bottom: 8px;
-        letter-spacing: 2px;
+        margin-bottom: 12px;
+        letter-spacing: 4px;
         text-transform: uppercase;
+        font-family: 'Times New Roman', serif;
+        text-shadow: none;
       }
       
       .academic-year {
-        font-size: 14px;
+        font-size: 16px;
         color: #000;
         font-weight: normal;
+        font-style: italic;
+        margin-top: 8px;
       }
       
       .classroom {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 30px;
-        margin: 40px 0;
-        max-width: 800px;
+        gap: 35px;
+        margin: 50px 0;
+        max-width: 744px;
         margin-left: auto;
         margin-right: auto;
       }
       
       .group {
         border: 2px solid #000;
-        border-radius: 8px;
-        padding: 20px;
+        border-radius: 0;
+        padding: 25px;
         background: #fff;
+        position: relative;
+        box-shadow: inset 0 0 0 4px white, inset 0 0 0 6px #000;
       }
       
       .group-title {
         text-align: center;
-        font-size: 16px;
+        font-size: 18px;
         font-weight: bold;
         color: #000;
-        margin-bottom: 20px;
-        padding: 8px;
+        margin-bottom: 25px;
+        padding: 12px 20px;
         background: white;
-        border-bottom: 1px solid #000;
+        border: 2px solid #000;
         text-transform: uppercase;
+        letter-spacing: 2px;
+        position: relative;
+      }
+      
+      .group-title::before {
+        content: "◆";
+        position: absolute;
+        left: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 12px;
+      }
+      
+      .group-title::after {
+        content: "◆";
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 12px;
       }
       
       .tables {
         display: grid;
         grid-template-columns: 1fr;
-        gap: 15px;
+        gap: 18px;
       }
       
       .table {
-        margin-bottom: 15px;
+        border: 1px solid #000;
+        border-radius: 0;
+        padding: 15px;
+        background: white;
+        position: relative;
+      }
+      
+      .table::before {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        right: 3px;
+        bottom: 3px;
+        border: 1px dotted #000;
+        pointer-events: none;
       }
       
       .table-label {
-        font-size: 12px;
+        font-size: 14px;
         font-weight: bold;
         color: #000;
-        margin-bottom: 8px;
+        margin-bottom: 12px;
         text-align: center;
-        border-bottom: 1px solid #000;
-        padding-bottom: 2px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding: 6px 0;
+        border-bottom: 2px solid #000;
+        position: relative;
+      }
+      
+      .table-label::before {
+        content: "●";
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 8px;
+      }
+      
+      .table-label::after {
+        content: "●";
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 8px;
       }
       
       .seats {
         display: flex;
-        gap: 8px;
+        gap: 12px;
         justify-content: center;
+        margin-top: 15px;
       }
       
       .seat {
-        border: 1.5px dashed #000;
-        padding: 12px 8px;
-        min-width: 80px;
-        min-height: 35px;
-        font-size: 11px;
+        border: 2px dashed #000;
+        padding: 15px 10px;
+        min-width: 90px;
+        min-height: 40px;
+        font-size: 12px;
         font-weight: 600;
         text-align: center;
-        border-radius: 4px;
+        border-radius: 0;
         background: white;
         color: #000;
         display: flex;
         align-items: center;
         justify-content: center;
         word-break: break-word;
-        line-height: 1.2;
+        line-height: 1.3;
+        position: relative;
+        font-family: 'Times New Roman', serif;
+      }
+      
+      .seat::before {
+        content: "";
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        right: 4px;
+        bottom: 4px;
+        border: 1px dotted #000;
+        pointer-events: none;
       }
       
       .seat.occupied {
         background: repeating-linear-gradient(
           45deg,
-          rgba(0,0,0,0.2) 0px 2px,
-          transparent 2px 4px
+          rgba(0,0,0,0.15) 0px 3px,
+          transparent 3px 6px
         );
         color: #000;
-        border: 1.5px solid #000;
+        border: 2px solid #000;
         border-style: solid;
         font-weight: 700;
         position: relative;
       }
       
+      .seat.occupied::before {
+        border-style: solid;
+      }
+      
       .seat.occupied::after {
+        content: "✓";
+        position: absolute;
+        top: 3px;
+        right: 3px;
+        font-size: 10px;
+        font-weight: bold;
+        color: #000;
+        background: white;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+      }
+      
+      .footer {
+        margin-top: 50px;
+        text-align: center;
+        border-top: 3px double #000;
+        padding-top: 30px;
+        position: relative;
+      }
+      
+      .footer::before {
+        content: "";
+        position: absolute;
+        top: 8px;
+        left: 20%;
+        right: 20%;
+        border-top: 1px solid #000;
+      }
+      
+      .footer-items {
+        display: flex;
+        justify-content: center;
+        gap: 50px;
+        margin-bottom: 35px;
+        flex-wrap: wrap;
+      }
+      
+      .footer-item {
+        padding: 15px 25px;
+        border: 2px solid #000;
+        border-radius: 0;
+        background: white;
+        font-weight: bold;
+        color: #000;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        position: relative;
+        font-family: 'Times New Roman', serif;
+      }
+      
+      .footer-item::before {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        right: 3px;
+        bottom: 3px;
+        border: 1px dotted #000;
+      }
+      
+      .legend {
+        margin-top: 35px;
+        padding: 20px 25px;
+        border: 2px solid #000;
+        border-radius: 0;
+        background: white;
+        display: inline-block;
+        position: relative;
+      }
+      
+      .legend::before {
+        content: "CHÚ THÍCH";
+        position: absolute;
+        top: -12px;
+        left: 20px;
+        background: white;
+        padding: 0 10px;
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 1px;
+      }
+      
+      .legend-items {
+        display: flex;
+        gap: 40px;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .legend-item {
+        display: flex;
+        align-items: center;
+        font-size: 13px;
+        color: #000;
+        font-weight: 600;
+        font-family: 'Times New Roman', serif;
+      }
+      
+      .legend-box {
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+        border-radius: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 8px;
+        font-weight: bold;
+        position: relative;
+      }
+      
+      .legend-box::before {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        right: 2px;
+        bottom: 2px;
+        border: 1px dotted #000;
+        pointer-events: none;
+      }
+      
+      .legend-box.occupied {
+        background: repeating-linear-gradient(
+          45deg,
+          rgba(0,0,0,0.15) 0px 3px,
+          transparent 3px 6px
+        );
+        color: #000;
+        border: 2px solid #000;
+        position: relative;
+      }
+      
+      .legend-box.occupied::before {
+        border-style: solid;
+      }
+      
+      .legend-box.occupied::after {
         content: "✓";
         position: absolute;
         top: 2px;
@@ -554,87 +796,14 @@ export default function Home() {
         font-size: 8px;
         font-weight: bold;
         color: #000;
-      }
-      
-      .footer {
-        margin-top: 40px;
-        text-align: center;
-        border-top: 2px solid #000;
-        padding-top: 20px;
-      }
-      
-      .footer-items {
-        display: flex;
-        justify-content: center;
-        gap: 40px;
-        margin-bottom: 30px;
-      }
-      
-      .footer-item {
-        padding: 10px 20px;
-        border: 2px solid #000;
-        border-radius: 4px;
         background: white;
-        font-weight: bold;
-        color: #000;
-        font-size: 14px;
-        text-transform: uppercase;
-      }
-      
-      .legend {
-        margin-top: 30px;
-        padding: 15px;
-        border: 2px solid #000;
-        border-radius: 4px;
-        background: white;
-        display: inline-block;
-      }
-      
-      .legend-items {
-        display: flex;
-        gap: 30px;
-        align-items: center;
-      }
-      
-      .legend-item {
-        display: flex;
-        align-items: center;
-        font-size: 12px;
-        color: #000;
-        font-weight: 600;
-      }
-      
-      .legend-box {
-        width: 20px;
-        height: 20px;
-        margin-right: 8px;
-        border-radius: 2px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 8px;
-        font-weight: bold;
-      }
-      
-      .legend-box.occupied {
-        background: repeating-linear-gradient(
-          45deg,
-          rgba(0,0,0,0.2) 0px 2px,
-          transparent 2px 4px
-        );
-        color: #000;
-        border: 2px solid #000;
-        position: relative;
-      }
-      
-      .legend-box.occupied::after {
-        content: "✓";
-        position: absolute;
-        top: 1px;
-        right: 1px;
-        font-size: 6px;
-        font-weight: bold;
-        color: #000;
+        line-height: 1;
       }
       
       .legend-box.empty {
@@ -642,37 +811,43 @@ export default function Home() {
         border: 2px dashed #000;
         color: #000;
       }
+      
+      .legend-box.empty::before {
+        border-style: dashed;
+      }
     `;
 
     const bodyHtml = `
-      <div class="header">
-        <div class="title">SƠ ĐỒ LỚP</div>
-        <div class="academic-year">NĂM HỌC: 2025 - 2026</div>
-      </div>
-      
-      <div class="classroom">
-        ${generateGroupHTML(1)}
-        ${generateGroupHTML(2)}
-        ${generateGroupHTML(3)}
-        ${generateGroupHTML(4)}
-      </div>
-      
-      <div class="footer">
-        <div class="footer-items">
-          <div class="footer-item">BÀN GIÁO VIÊN</div>
-          <div class="footer-item">BẢNG</div>
-          <div class="footer-item">CỬA VÀO</div>
+      <div class="print-root">
+        <div class="header">
+          <div class="title">SƠ ĐỒ LỚP</div>
+          <div class="academic-year">NĂM HỌC: 2025 - 2026</div>
         </div>
         
-        <div class="legend">
-          <div class="legend-items">
-            <div class="legend-item">
-              <div class="legend-box occupied"></div>
-              <span>ĐÃ CHỌN CHỖ NGỒI</span>
-            </div>
-            <div class="legend-item">
-              <div class="legend-box empty">---</div>
-              <span>CHỖ TRỐNG</span>
+        <div class="classroom">
+          ${generateGroupHTML(1)}
+          ${generateGroupHTML(2)}
+          ${generateGroupHTML(3)}
+          ${generateGroupHTML(4)}
+        </div>
+        
+        <div class="footer">
+          <div class="footer-items">
+            <div class="footer-item">BÀN GIÁO VIÊN</div>
+            <div class="footer-item">BẢNG</div>
+            <div class="footer-item">CỬA VÀO</div>
+          </div>
+          
+          <div class="legend">
+            <div class="legend-items">
+              <div class="legend-item">
+                <div class="legend-box occupied"></div>
+                <span>ĐÃ CHỌN CHỖ NGỒI</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-box empty">---</div>
+                <span>CHỖ TRỐNG</span>
+              </div>
             </div>
           </div>
         </div>
