@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Presentation, Users, UserCog, FileSpreadsheet, RotateCcw, Map, Download, Image, FileText, Printer } from "lucide-react";
 import { Link } from "wouter";
@@ -14,6 +14,7 @@ import {
 import ClassroomLayout from "@/components/classroom-layout";
 import SeatRegistrationModal from "@/components/seat-registration-modal";
 import EditStudentNameModal from "@/components/edit-student-name-modal";
+import NameVerificationModal from "@/components/name-verification-modal";
 import AdminDashboard from "@/components/admin-dashboard";
 import { PasswordDialog } from "@/components/password-dialog";
 import { apiRequest } from "@/lib/queryClient";
@@ -45,8 +46,17 @@ export default function Home() {
   const [selectedSeat, setSelectedSeat] = useState<string | null>(null);
   const [editingSeat, setEditingSeat] = useState<string | null>(null);
   const [showPasswordDialog, setShowPasswordDialog] = useState(false);
+  const [showNameVerification, setShowNameVerification] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  // Check if user has seen the name verification modal
+  useEffect(() => {
+    const hasSeenNameVerification = localStorage.getItem('hasSeenNameVerification');
+    if (!hasSeenNameVerification) {
+      setShowNameVerification(true);
+    }
+  }, []);
 
   const { data: seats = [], isLoading } = useQuery<Seat[]>({
     queryKey: ["/api/seats"],
@@ -1196,6 +1206,29 @@ export default function Home() {
     }
   };
 
+  const handleNameVerification = (studentName: string) => {
+    // Mark as seen in localStorage
+    localStorage.setItem('hasSeenNameVerification', 'true');
+    setShowNameVerification(false);
+    
+    toast({
+      title: "Cảm ơn bạn! 💕",
+      description: `Thông tin "${studentName}" đã được ghi nhận. Bây giờ bạn có thể chọn chỗ ngồi!`,
+    });
+  };
+
+  const handleSkipNameVerification = () => {
+    // Mark as seen in localStorage even if skipped
+    localStorage.setItem('hasSeenNameVerification', 'true');
+    setShowNameVerification(false);
+    
+    toast({
+      title: "Đã bỏ qua",
+      description: "Bạn có thể cập nhật tên sau khi chọn chỗ ngồi.",
+      variant: "destructive",
+    });
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center" data-testid="loading-spinner">
@@ -1431,6 +1464,12 @@ export default function Home() {
         open={showPasswordDialog}
         onOpenChange={setShowPasswordDialog}
         onPasswordCorrect={handlePasswordCorrect}
+      />
+      
+      <NameVerificationModal
+        isOpen={showNameVerification}
+        onClose={handleSkipNameVerification}
+        onVerify={handleNameVerification}
       />
     </div>
   );
