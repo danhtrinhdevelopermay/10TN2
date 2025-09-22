@@ -1,10 +1,16 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Presentation, Users, UserCog, FileSpreadsheet, RotateCcw, Map } from "lucide-react";
+import { Presentation, Users, UserCog, FileSpreadsheet, RotateCcw, Map, Download, Image, FileText, Printer } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import ClassroomLayout from "@/components/classroom-layout";
 import SeatRegistrationModal from "@/components/seat-registration-modal";
 import EditStudentNameModal from "@/components/edit-student-name-modal";
@@ -153,7 +159,7 @@ export default function Home() {
     clearSeatMutation.mutate(seatId);
   };
 
-  const handleDownloadDiagram = () => {
+  const handlePrintDiagram = () => {
     const printContent = generatePrintableClassroomHTML(seats);
     const printWindow = window.open('', '_blank');
     
@@ -187,10 +193,378 @@ export default function Home() {
     }
   };
 
+  const handleDownloadPNG = async () => {
+    try {
+      // Dynamically import html2canvas to avoid build issues
+      const html2canvas = (await import('html2canvas')).default;
+      
+      // Generate the printable content and extract body and styles
+      const { bodyHtml, cssContent } = generatePrintableClassroomContent(seats);
+      
+      // Create a temporary container with the classroom content
+      const tempContainer = document.createElement('div');
+      tempContainer.style.position = 'absolute';
+      tempContainer.style.left = '-9999px';
+      tempContainer.style.width = '794px'; // A4 width in pixels
+      tempContainer.style.background = 'white';
+      tempContainer.style.fontFamily = 'Arial, sans-serif';
+      tempContainer.style.fontSize = '12px';
+      tempContainer.style.lineHeight = '1.4';
+      tempContainer.style.color = '#000';
+      
+      // Add the body content first
+      tempContainer.innerHTML = bodyHtml;
+      
+      // Create and insert style element as first child for deterministic order
+      const styleEl = document.createElement('style');
+      styleEl.textContent = cssContent;
+      tempContainer.insertBefore(styleEl, tempContainer.firstChild);
+      
+      document.body.appendChild(tempContainer);
+      
+      // Wait for styles to apply and layout to complete
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      // Generate canvas with full content height
+      const canvas = await html2canvas(tempContainer, {
+        width: 794,
+        backgroundColor: '#ffffff',
+        scale: 2, // Higher quality
+        useCORS: true,
+        allowTaint: false
+      });
+      
+      // Remove temporary container
+      document.body.removeChild(tempContainer);
+      
+      // Download the image
+      const link = document.createElement('a');
+      link.download = `so-do-cho-ngoi-${new Date().toISOString().split('T')[0]}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      
+      toast({
+        title: "Thành công",
+        description: "Đã tải sơ đồ dưới dạng PNG!",
+      });
+    } catch (error) {
+      toast({
+        title: "Lỗi",
+        description: "Không thể tạo file PNG. Vui lòng thử lại.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDownloadPDF = async () => {
+    try {
+      // Dynamically import required libraries
+      const html2canvas = (await import('html2canvas')).default;
+      const jsPDF = (await import('jspdf')).default;
+      
+      // Generate the printable content and extract body and styles
+      const { bodyHtml, cssContent } = generatePrintableClassroomContent(seats);
+      
+      // Create a temporary container with the classroom content
+      const tempContainer = document.createElement('div');
+      tempContainer.style.position = 'absolute';
+      tempContainer.style.left = '-9999px';
+      tempContainer.style.width = '794px'; // A4 width in pixels
+      tempContainer.style.background = 'white';
+      tempContainer.style.fontFamily = 'Arial, sans-serif';
+      tempContainer.style.fontSize = '12px';
+      tempContainer.style.lineHeight = '1.4';
+      tempContainer.style.color = '#000';
+      
+      // Add the body content first
+      tempContainer.innerHTML = bodyHtml;
+      
+      // Create and insert style element as first child for deterministic order
+      const styleEl = document.createElement('style');
+      styleEl.textContent = cssContent;
+      tempContainer.insertBefore(styleEl, tempContainer.firstChild);
+      
+      document.body.appendChild(tempContainer);
+      
+      // Wait for styles to apply and layout to complete
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      // Generate canvas with full content height
+      const canvas = await html2canvas(tempContainer, {
+        width: 794,
+        backgroundColor: '#ffffff',
+        scale: 2,
+        useCORS: true,
+        allowTaint: false
+      });
+      
+      // Remove temporary container
+      document.body.removeChild(tempContainer);
+      
+      // Create PDF
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      });
+      
+      const imgWidth = 210; // A4 width in mm
+      const pageHeight = 295; // A4 height in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      
+      let position = 0;
+      
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+      
+      // Fixed pagination logic to avoid blank page
+      while (heightLeft > 0) {
+        position = -(imgHeight - heightLeft);
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+      
+      pdf.save(`so-do-cho-ngoi-${new Date().toISOString().split('T')[0]}.pdf`);
+      
+      toast({
+        title: "Thành công",
+        description: "Đã tải sơ đồ dưới dạng PDF!",
+      });
+    } catch (error) {
+      toast({
+        title: "Lỗi",
+        description: "Không thể tạo file PDF. Vui lòng thử lại.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const escapeHtml = (text: string): string => {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+  };
+
+  const generatePrintableClassroomContent = (seats: Seat[]) => {
+    const getSeatData = (groupNumber: number, tableNumber: number, seatNumber: number) => {
+      return seats.find(seat => 
+        seat.groupNumber === groupNumber && 
+        seat.tableNumber === tableNumber && 
+        seat.seatNumber === seatNumber
+      );
+    };
+
+    const generateGroupHTML = (groupNumber: number) => {
+      let groupHTML = `
+        <div class="group">
+          <h3>Tổ ${groupNumber}</h3>
+          <div class="tables">
+      `;
+
+      for (let tableNumber = 1; tableNumber <= 6; tableNumber++) {
+        const seat1 = getSeatData(groupNumber, tableNumber, 1);
+        const seat2 = getSeatData(groupNumber, tableNumber, 2);
+        
+        groupHTML += `
+          <div class="table">
+            <div class="table-label">Bàn ${tableNumber}</div>
+            <div class="seats">
+              <div class="seat ${seat1?.studentName ? 'occupied' : 'empty'}">
+                ${seat1?.studentName ? escapeHtml(seat1.studentName) : ''}
+              </div>
+              <div class="seat ${seat2?.studentName ? 'occupied' : 'empty'}">
+                ${seat2?.studentName ? escapeHtml(seat2.studentName) : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      groupHTML += `
+          </div>
+        </div>
+      `;
+      
+      return groupHTML;
+    };
+
+    const cssContent = `
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      .header {
+        text-align: center;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #000;
+        padding-bottom: 10px;
+      }
+      
+      .title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+      
+      .board {
+        text-align: center;
+        margin: 15px 0;
+        padding: 8px;
+        border: 2px solid #000;
+        font-weight: bold;
+      }
+      
+      .teacher-desk {
+        text-align: center;
+        margin: 10px 0;
+        padding: 5px;
+        border: 1px solid #666;
+      }
+      
+      .classroom {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin: 20px 0;
+      }
+      
+      .group {
+        border: 1px solid #000;
+        padding: 15px;
+      }
+      
+      .group h3 {
+        text-align: center;
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #666;
+        padding-bottom: 5px;
+      }
+      
+      .tables {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 10px;
+      }
+      
+      .table {
+        text-align: center;
+      }
+      
+      .table-label {
+        font-size: 10px;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      
+      .seats {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+      
+      .seat {
+        border: 1px solid #000;
+        padding: 8px 4px;
+        min-height: 30px;
+        font-size: 10px;
+        font-weight: bold;
+        text-align: center;
+        word-break: break-word;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .seat.occupied {
+        background-color: #f0f0f0;
+      }
+      
+      .seat.empty {
+        background-color: white;
+        border-style: dashed;
+      }
+      
+      .door {
+        text-align: center;
+        margin-top: 20px;
+        padding: 5px;
+        border: 1px solid #666;
+        font-weight: bold;
+      }
+      
+      .legend {
+        margin-top: 20px;
+        border: 1px solid #000;
+        padding: 10px;
+      }
+      
+      .legend h4 {
+        font-size: 12px;
+        margin-bottom: 8px;
+        font-weight: bold;
+      }
+      
+      .legend-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+        font-size: 10px;
+      }
+      
+      .legend-box {
+        width: 15px;
+        height: 15px;
+        border: 1px solid #000;
+        margin-right: 8px;
+      }
+      
+      .legend-box.occupied {
+        background-color: #f0f0f0;
+      }
+      
+      .legend-box.empty {
+        background-color: white;
+        border-style: dashed;
+      }
+    `;
+
+    const bodyHtml = `
+      <div class="header">
+        <div class="title">SƠ ĐỒ CHỖ NGỒI LỚP HỌC</div>
+        <div class="board">BẢNG VIẾT</div>
+        <div class="teacher-desk">🏫 Bàn giáo viên</div>
+      </div>
+      
+      <div class="classroom">
+        ${generateGroupHTML(1)}
+        ${generateGroupHTML(2)}
+        ${generateGroupHTML(3)}
+        ${generateGroupHTML(4)}
+      </div>
+      
+      <div class="door">🚪 Cửa ra vào</div>
+      
+      <div class="legend">
+        <h4>Chú thích:</h4>
+        <div class="legend-item">
+          <div class="legend-box occupied"></div>
+          <span>Đã có học sinh</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-box empty"></div>
+          <span>Chỗ trống</span>
+        </div>
+      </div>
+    `;
+
+    return { bodyHtml, cssContent };
   };
 
   const generatePrintableClassroomHTML = (seats: Seat[]) => {
@@ -670,14 +1044,31 @@ export default function Home() {
                   Bảng điều khiển Lớp trưởng
                 </h2>
                 <div className="flex space-x-3">
-                  <Button
-                    onClick={handleDownloadDiagram}
-                    className="bg-accent hover:bg-accent/90 text-accent-foreground"
-                    data-testid="button-download-diagram"
-                  >
-                    <FileSpreadsheet className="mr-2 h-4 w-4" />
-                    Tải sơ đồ in
-                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        className="bg-accent hover:bg-accent/90 text-accent-foreground"
+                        data-testid="button-download-diagram"
+                      >
+                        <Download className="mr-2 h-4 w-4" />
+                        Tải sơ đồ
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={handlePrintDiagram} data-testid="menu-item-print">
+                        <Printer className="mr-2 h-4 w-4" />
+                        In sơ đồ
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={handleDownloadPNG} data-testid="menu-item-png">
+                        <Image className="mr-2 h-4 w-4" />
+                        Tải PNG
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={handleDownloadPDF} data-testid="menu-item-pdf">
+                        <FileText className="mr-2 h-4 w-4" />
+                        Tải PDF
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                   <Button
                     onClick={handleExportExcel}
                     className="bg-secondary hover:bg-secondary/90 text-secondary-foreground"
