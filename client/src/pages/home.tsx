@@ -160,7 +160,35 @@ export default function Home() {
   };
 
   const handlePrintDiagram = () => {
-    const printContent = generatePrintableClassroomHTML(seats);
+    const { bodyHtml, cssContent } = generatePrintableClassroomContent(seats);
+    
+    // Create complete HTML document for printing with @page styles
+    const printContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Sơ đồ Chỗ ngồi Lớp học</title>
+        <style>
+          @page {
+            size: A4;
+            margin: 1cm;
+          }
+          
+          ${cssContent}
+          
+          @media print {
+            body { margin: 0; }
+            .no-print { display: none; }
+          }
+        </style>
+      </head>
+      <body>
+        ${bodyHtml}
+      </body>
+      </html>
+    `;
+    
     const printWindow = window.open('', '_blank');
     
     if (printWindow) {
@@ -360,7 +388,7 @@ export default function Home() {
     const generateGroupHTML = (groupNumber: number) => {
       let groupHTML = `
         <div class="group">
-          <h3>Tổ ${groupNumber}</h3>
+          <div class="group-title">TỔ ${groupNumber}</div>
           <div class="tables">
       `;
 
@@ -398,148 +426,185 @@ export default function Home() {
         box-sizing: border-box;
       }
       
+      body {
+        font-family: Arial, sans-serif;
+        background: white;
+        padding: 20px;
+      }
+      
       .header {
         text-align: center;
-        margin-bottom: 20px;
-        border-bottom: 2px solid #000;
-        padding-bottom: 10px;
+        margin-bottom: 30px;
+        padding: 20px 0;
       }
       
       .title {
-        font-size: 18px;
+        font-size: 24px;
         font-weight: bold;
-        margin-bottom: 5px;
+        color: #2563eb;
+        margin-bottom: 8px;
+        letter-spacing: 2px;
       }
       
-      .board {
-        text-align: center;
-        margin: 15px 0;
-        padding: 8px;
-        border: 2px solid #000;
-        font-weight: bold;
-      }
-      
-      .teacher-desk {
-        text-align: center;
-        margin: 10px 0;
-        padding: 5px;
-        border: 1px solid #666;
+      .academic-year {
+        font-size: 14px;
+        color: #666;
+        font-weight: normal;
       }
       
       .classroom {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 20px;
-        margin: 20px 0;
+        gap: 30px;
+        margin: 40px 0;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
       }
       
       .group {
-        border: 1px solid #000;
-        padding: 15px;
+        border: 2px solid #3b82f6;
+        border-radius: 12px;
+        padding: 20px;
+        background: #f8fafc;
       }
       
-      .group h3 {
+      .group-title {
         text-align: center;
-        font-size: 14px;
+        font-size: 16px;
         font-weight: bold;
-        margin-bottom: 15px;
-        border-bottom: 1px solid #666;
-        padding-bottom: 5px;
+        color: #2563eb;
+        margin-bottom: 20px;
+        padding: 8px;
+        background: white;
+        border: 1px solid #3b82f6;
+        border-radius: 6px;
       }
       
       .tables {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 10px;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
       }
       
       .table {
-        text-align: center;
+        margin-bottom: 15px;
       }
       
       .table-label {
-        font-size: 10px;
-        margin-bottom: 5px;
+        font-size: 12px;
         font-weight: bold;
+        color: #374151;
+        margin-bottom: 8px;
+        text-align: center;
       }
       
       .seats {
         display: flex;
-        flex-direction: column;
-        gap: 3px;
-      }
-      
-      .seat {
-        border: 1px solid #000;
-        padding: 8px 4px;
-        min-height: 30px;
-        font-size: 10px;
-        font-weight: bold;
-        text-align: center;
-        word-break: break-word;
-        display: flex;
-        align-items: center;
+        gap: 8px;
         justify-content: center;
       }
       
-      .seat.occupied {
-        background-color: #f0f0f0;
-      }
-      
-      .seat.empty {
-        background-color: white;
+      .seat {
+        border: 2px solid #d1d5db;
         border-style: dashed;
+        padding: 12px 8px;
+        min-width: 80px;
+        min-height: 35px;
+        font-size: 11px;
+        font-weight: 500;
+        text-align: center;
+        border-radius: 6px;
+        background: white;
+        color: #6b7280;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        word-break: break-word;
+        line-height: 1.2;
       }
       
-      .door {
+      .seat.occupied {
+        background: #10b981;
+        color: white;
+        border: 2px solid #059669;
+        border-style: solid;
+        font-weight: 600;
+      }
+      
+      .footer {
+        margin-top: 40px;
         text-align: center;
-        margin-top: 20px;
-        padding: 5px;
-        border: 1px solid #666;
+      }
+      
+      .footer-items {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        margin-bottom: 30px;
+      }
+      
+      .footer-item {
+        padding: 10px 20px;
+        border: 2px solid #3b82f6;
+        border-radius: 8px;
+        background: #eff6ff;
         font-weight: bold;
+        color: #1d4ed8;
+        font-size: 14px;
       }
       
       .legend {
-        margin-top: 20px;
-        border: 1px solid #000;
-        padding: 10px;
+        margin-top: 30px;
+        padding: 15px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        background: #f9fafb;
+        display: inline-block;
       }
       
-      .legend h4 {
-        font-size: 12px;
-        margin-bottom: 8px;
-        font-weight: bold;
+      .legend-items {
+        display: flex;
+        gap: 30px;
+        align-items: center;
       }
       
       .legend-item {
         display: flex;
         align-items: center;
-        margin-bottom: 5px;
-        font-size: 10px;
+        font-size: 12px;
+        color: #374151;
       }
       
       .legend-box {
-        width: 15px;
-        height: 15px;
-        border: 1px solid #000;
+        width: 20px;
+        height: 20px;
         margin-right: 8px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 8px;
+        font-weight: bold;
       }
       
       .legend-box.occupied {
-        background-color: #f0f0f0;
+        background: #10b981;
+        color: white;
+        border: 2px solid #059669;
       }
       
       .legend-box.empty {
-        background-color: white;
-        border-style: dashed;
+        background: white;
+        border: 2px dashed #d1d5db;
+        color: #6b7280;
       }
     `;
 
     const bodyHtml = `
       <div class="header">
-        <div class="title">SƠ ĐỒ CHỖ NGỒI LỚP HỌC</div>
-        <div class="board">BẢNG VIẾT</div>
-        <div class="teacher-desk">🏫 Bàn giáo viên</div>
+        <div class="title">SƠ ĐỒ LỚP</div>
+        <div class="academic-year">NĂM HỌC: 2025 - 2026</div>
       </div>
       
       <div class="classroom">
@@ -549,17 +614,24 @@ export default function Home() {
         ${generateGroupHTML(4)}
       </div>
       
-      <div class="door">🚪 Cửa ra vào</div>
-      
-      <div class="legend">
-        <h4>Chú thích:</h4>
-        <div class="legend-item">
-          <div class="legend-box occupied"></div>
-          <span>Đã có học sinh</span>
+      <div class="footer">
+        <div class="footer-items">
+          <div class="footer-item">BÀN GIÁO VIÊN</div>
+          <div class="footer-item">BẢNG</div>
+          <div class="footer-item">CỬA VÀO</div>
         </div>
-        <div class="legend-item">
-          <div class="legend-box empty"></div>
-          <span>Chỗ trống</span>
+        
+        <div class="legend">
+          <div class="legend-items">
+            <div class="legend-item">
+              <div class="legend-box occupied">✓</div>
+              <span>ĐÃ CHỌN CHỖ NGỒI</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-box empty">---</div>
+              <span>CHỖ TRỐNG</span>
+            </div>
+          </div>
         </div>
       </div>
     `;
