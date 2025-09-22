@@ -60,7 +60,7 @@ export default function SeatRegistrationModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[95vw] max-w-md mx-4 max-h-[90vh] overflow-y-auto" data-testid="seat-registration-modal">
+      <DialogContent className="w-[95vw] max-w-md max-h-[90vh] overflow-y-auto" data-testid="seat-registration-modal">
         <DialogHeader className="pb-4">
           <DialogTitle className="text-xl font-bold text-center text-primary" data-testid="modal-title">
             📚 Đăng ký chỗ ngồi

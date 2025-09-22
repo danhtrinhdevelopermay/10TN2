@@ -46,7 +46,7 @@ export default function NameVerificationModal({
   return (
     <Dialog open={isOpen} onOpenChange={canClose ? onClose : undefined}>
       <DialogContent 
-        className="w-[95vw] max-w-lg mx-4 max-h-[90vh] overflow-y-auto border-pink-200 dark:border-pink-700" 
+        className="w-[95vw] max-w-lg max-h-[90vh] overflow-y-auto border-pink-200 dark:border-pink-700" 
         data-testid="name-verification-modal"
       >
         <DialogHeader className="pb-4">
