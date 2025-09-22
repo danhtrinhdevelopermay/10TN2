@@ -112,10 +112,10 @@ export default function NameVerificationModal({
               <p className="text-sm text-orange-600 dark:text-orange-400 leading-relaxed">
                 Do hệ thống lưu trữ của mk gặp sự cố kỹ thuật, 
                 một số tên của các bn có thể bị sai chính tả hoặc thiếu thông tin. 
-                Vì vậy, chúng tôi cần bạn kiểm tra lại và nhập đầy đủ họ và tên 
+                Vì vậy, mk cần bạn kiểm tra lại và nhập đầy đủ họ và tên 
                 chính xác của mình để đảm bảo dữ liệu được cập nhật đúng. 
                 <br />
-                <span className="font-semibold">💝 Cảm ơn bạn đã hợp tác!</span>
+                <span className="font-semibold">Cảm ơn bn</span>
               </p>
             </div>
           </div>
