@@ -261,57 +261,66 @@ export default function Home() {
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
       <header className="bg-card border-b border-border shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
-              <Presentation className="text-2xl text-primary" data-testid="logo-icon" />
-              <h1 className="text-xl font-semibold text-foreground" data-testid="app-title">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
+          <div className="flex flex-col sm:flex-row justify-between items-center sm:h-16 py-4 sm:py-0 gap-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <Presentation className="text-xl sm:text-2xl text-primary" data-testid="logo-icon" />
+              <h1 className="text-base sm:text-xl font-semibold text-foreground hidden sm:block" data-testid="app-title">
                 Sơ đồ Chỗ ngồi Lớp học
               </h1>
+              <h1 className="text-sm font-semibold text-foreground sm:hidden" data-testid="app-title-mobile">
+                Sơ đồ Lớp
+              </h1>
             </div>
-            <div className="flex items-center space-x-4">
-              <Link href="/map">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="text-muted-foreground"
-                  data-testid="button-map-view"
-                >
-                  <Map className="mr-2 h-4 w-4" />
-                  Sơ đồ lớp
-                </Button>
-              </Link>
-              <Link href="/results">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="text-muted-foreground"
-                  data-testid="button-results-view"
-                >
-                  <FileSpreadsheet className="mr-2 h-4 w-4" />
-                  Kết quả
-                </Button>
-              </Link>
+            <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 w-full sm:w-auto">
+              <div className="flex flex-wrap items-center justify-center gap-2 sm:flex-nowrap">
+                <Link href="/map">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-muted-foreground text-xs sm:text-sm"
+                    data-testid="button-map-view"
+                  >
+                    <Map className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                    <span className="hidden sm:inline">Sơ đồ lớp</span>
+                    <span className="sm:hidden">Sơ đồ</span>
+                  </Button>
+                </Link>
+                <Link href="/results">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-muted-foreground text-xs sm:text-sm"
+                    data-testid="button-results-view"
+                  >
+                    <FileSpreadsheet className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                    <span className="hidden sm:inline">Kết quả</span>
+                    <span className="sm:hidden">KQ</span>
+                  </Button>
+                </Link>
+              </div>
               <div className="flex bg-muted rounded-lg p-1">
                 <Button
                   variant={mode === "student" ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setMode("student")}
-                  className={mode === "student" ? "bg-primary text-primary-foreground" : "text-muted-foreground"}
+                  className={`text-xs sm:text-sm ${mode === "student" ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}
                   data-testid="button-student-mode"
                 >
-                  <Users className="mr-2 h-4 w-4" />
-                  Học sinh
+                  <Users className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="hidden sm:inline">Học sinh</span>
+                  <span className="sm:hidden">HS</span>
                 </Button>
                 <Button
                   variant={mode === "admin" ? "default" : "ghost"}
                   size="sm"
                   onClick={handleAdminModeClick}
-                  className={mode === "admin" ? "bg-primary text-primary-foreground" : "text-muted-foreground"}
+                  className={`text-xs sm:text-sm ${mode === "admin" ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}
                   data-testid="button-admin-mode"
                 >
-                  <UserCog className="mr-2 h-4 w-4" />
-                  Lớp trưởng
+                  <UserCog className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="hidden sm:inline">Lớp trưởng</span>
+                  <span className="sm:hidden">LT</span>
                 </Button>
               </div>
             </div>
