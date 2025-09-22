@@ -392,7 +392,7 @@ export default function Home() {
           <div class="tables">
       `;
 
-      for (let tableNumber = 1; tableNumber <= 6; tableNumber++) {
+      for (let tableNumber = 6; tableNumber >= 1; tableNumber--) {
         const seat1 = getSeatData(groupNumber, tableNumber, 1);
         const seat2 = getSeatData(groupNumber, tableNumber, 2);
         
